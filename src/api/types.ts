@@ -17,4 +17,6 @@ export interface ApplyToJobPayload {
   jobId: string;
   candidateId: string;
   repoUrl: string;
+// Se incluye applicationId porque el backend lo requiere para validar la solicitud.
+  applicationId: string;
 }

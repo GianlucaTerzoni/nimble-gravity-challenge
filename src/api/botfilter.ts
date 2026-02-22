@@ -12,8 +12,11 @@ export function getJobs() {
 }
 
 export function applyToJob(payload: ApplyToJobPayload) {
-  return request<{ ok: boolean }>('/api/candidate/apply-to-job', {
-    method: 'POST',
-    json: payload,
-  });
+  return request<{ ok: boolean }>(
+    '/api/candidate/apply-to-job',
+    {
+      method: 'POST',
+      json: payload,
+    }
+  );
 }

@@ -29,12 +29,15 @@ function JobItem({ job, candidate }: JobItemProps) {
     setSubmitting(true);
     setError(null);
 
+    
+
     try {
       await applyToJob({
         uuid: candidate.uuid,
         jobId: job.id,
         candidateId: candidate.candidateId,
         repoUrl: repoUrl.trim(),
+        applicationId: candidate.applicationId,
       });
 
       setSuccess(true);
