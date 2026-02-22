@@ -2,14 +2,18 @@ import { useState } from 'react';
 import { getCandidateByEmail } from '../api/botfilter';
 import type { Candidate } from '../api/types';
 
-function CandidatePanel() {
+type CandidatePanelProps = {
+  onCandidateLoaded: (candidate: Candidate) => void;
+};
+
+function CandidatePanel({ onCandidateLoaded }: CandidatePanelProps) {
   const [email, setEmail] = useState<string>(
     (import.meta.env.VITE_DEFAULT_EMAIL as string) || ''
   );
 
-  const [candidate, setCandidate] = useState<Candidate | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [loadedLabel, setLoadedLabel] = useState<string | null>(null);
 
   const canSubmit = email.trim().length > 0 && !loading;
 
@@ -17,20 +21,21 @@ function CandidatePanel() {
     const trimmedEmail = email.trim();
     if (!trimmedEmail) {
       setError('Please enter an email.');
-      setCandidate(null);
+      setLoadedLabel(null);
       return;
     }
 
     setLoading(true);
     setError(null);
+    setLoadedLabel(null);
 
     try {
       const data = await getCandidateByEmail(trimmedEmail);
-      setCandidate(data);
+      onCandidateLoaded(data);
+      setLoadedLabel(`${data.firstName} ${data.lastName}`);
     } catch (err) {
       const message = err instanceof Error ? err.message : 'Unknown error';
       setError(message);
-      setCandidate(null);
     } finally {
       setLoading(false);
     }
@@ -65,15 +70,10 @@ function CandidatePanel() {
 
       {error && <p style={{ marginTop: 12, color: '#b00020' }}>{error}</p>}
 
-      {candidate && !error && (
-        <div style={{ marginTop: 12 }}>
-          <p style={{ margin: 0 }}>
-            <strong>Loaded:</strong> {candidate.firstName} {candidate.lastName}
-          </p>
-          <p style={{ margin: '6px 0 0 0', fontSize: 12, color: '#555' }}>
-            uuid: {candidate.uuid} · candidateId: {candidate.candidateId}
-          </p>
-        </div>
+      {loadedLabel && !error && (
+        <p style={{ marginTop: 12, marginBottom: 0 }}>
+          <strong>Loaded:</strong> {loadedLabel}
+        </p>
       )}
     </section>
   );
