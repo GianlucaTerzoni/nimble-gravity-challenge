@@ -26,7 +26,7 @@ async function parseResponse(res: Response): Promise<unknown> {
   const contentType = res.headers.get('content-type') || '';
 
   if (contentType.includes('application/json')) {
-    // Si el body está vacío, res.json() puede fallar. Lo manejamos.
+    // Si el body está vacío, res.json() puede fallar. 
     try {
       return await res.json();
     } catch {
