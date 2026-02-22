@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import CandidatePanel from './components/CandidatePanel';
+import JobList from './components/JobList';
 import type { Candidate } from './api/types';
 
 function App() {
@@ -16,6 +17,8 @@ function App() {
           Candidate ready (uuid: {candidate.uuid}, candidateId: {candidate.candidateId})
         </p>
       )}
+
+      <JobList candidate={candidate} />
     </div>
   );
 }
