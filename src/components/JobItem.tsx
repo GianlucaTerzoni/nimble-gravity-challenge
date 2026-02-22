@@ -29,7 +29,6 @@ function JobItem({ job, candidate }: JobItemProps) {
     setSubmitting(true);
     setError(null);
 
-    
 
     try {
       await applyToJob({
@@ -84,6 +83,12 @@ function JobItem({ job, candidate }: JobItemProps) {
 
       {error && (
         <p style={{ marginTop: 8, color: '#b00020' }}>{error}</p>
+      )}
+
+      {success && (
+        <p style={{ marginTop: 8, color: 'green' }}>
+          Application submitted successfully.
+        </p>
       )}
     </div>
   );
