@@ -64,10 +64,22 @@ export async function request<T>(path: string, options: RequestOptions = {}): Pr
   if (!res.ok) {
     const message =
       (hasMessage(data) && data.message) ||
+      (typeof data === 'object' &&
+        data !== null &&
+        'error' in data &&
+        typeof (data as { error?: unknown }).error === 'string' &&
+        (data as { error: string }).error) ||
+      (typeof data === 'object' &&
+        data !== null &&
+        'detail' in data &&
+        typeof (data as { detail?: unknown }).detail === 'string' &&
+        (data as { detail: string }).detail) ||
       (typeof data === 'string' ? data : null) ||
+      (data ? JSON.stringify(data) : null) ||
       `HTTP ${res.status}`;
 
     throw new Error(message);
+  
   }
 
   return data as T;

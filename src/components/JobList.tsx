@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { getJobs } from '../api/botfilter';
 import type { Candidate, Job } from '../api/types';
+import JobItem from './JobItem';
 
 type JobListProps = {
   candidate: Candidate | null;
@@ -50,7 +51,7 @@ function JobList({ candidate }: JobListProps) {
       <ul style={{ padding: 0, listStyle: 'none' }}>
         {jobs.map((job) => (
           <li key={job.id} style={{ marginBottom: 16 }}>
-            {job.title}
+            <JobItem job={job} candidate={candidate} />
           </li>
         ))}
       </ul>
